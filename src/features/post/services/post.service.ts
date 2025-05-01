@@ -72,9 +72,14 @@ export const PostService = (postApiClient: ReturnType<typeof postApi>, userApiCl
   addPost: async (title: string, body: string, userId: number) => {
     try {
       const result = await postApiClient.fetchAddPost(title, body, userId)
-      console.log(result)
       if (!result) return null
-      return result
+      const { users } = await userApiClient.fetchAllUserProfiles()
+      const author = users.find((user) => user.id === userId)
+
+      return {
+        ...result,
+        author,
+      }
     } catch (error) {
       console.error("PostService addPost Error:", error)
       throw error

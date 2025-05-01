@@ -17,19 +17,11 @@ export const useAddPost = () => {
   return useMutation<PostWithAuthor, Error, AddPostParams>({
     mutationFn: async ({ title, body, userId, tags }) => {
       const service = PostService(postApi(apiClient), userApi(apiClient))
-      const newPost = await service.addPost(title, body, userId)
-      if (!newPost) throw new Error("Error: Fail to add post")
-
-      const { users } = await userApi(apiClient).fetchAllUserProfiles()
-      const author = users.find((user) => user.id === userId)
+      const newPostWithAuthor = await service.addPost(title, body, userId)
+      if (!newPostWithAuthor) throw new Error("Error: Fail to add post")
 
       return {
-        ...newPost,
-        id: newPost.id || Math.floor(Math.random() * 1000) + 100,
-        title,
-        body,
-        userId,
-        author,
+        ...newPostWithAuthor,
         tags,
         reactions: { likes: 0, dislikes: 0 },
       }

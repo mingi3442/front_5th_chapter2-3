@@ -22,7 +22,7 @@ export const AddPostModal: React.FC = () => {
       setNewPost({ title: "", body: "", userId: 1 })
       handleCloseModal()
     } catch (error) {
-      console.error("게시물 추가 오류:", error)
+      console.error("Add Post Error:", error)
     }
   }
 
