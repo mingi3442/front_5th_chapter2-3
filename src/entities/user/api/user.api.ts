@@ -6,7 +6,7 @@ import { User } from "../types"
 export const userApi = (apiClient: ApiClient) => ({
   fetchAllUserProfiles: async (): Promise<AllUserProfilesResponseDto> => {
     return await apiClient
-      .get<ApiResponse<AllUserProfilesResponseDto>>(`/api/users?limit=0&select=username,image`)
+      .get<ApiResponse<AllUserProfilesResponseDto>>(`/users?limit=0&select=username,image`)
       .then((response) => {
         return response.data
       })
@@ -17,7 +17,7 @@ export const userApi = (apiClient: ApiClient) => ({
   },
   fetchGetUserProfile: async (userId: number): Promise<User> => {
     return await apiClient
-      .get<ApiResponse<User>>(`/api/users/${userId}`)
+      .get<ApiResponse<User>>(`/users/${userId}`)
       .then((response) => response.data)
       .catch((error) => {
         console.error("FetchGetUserProfile Error: ", error)

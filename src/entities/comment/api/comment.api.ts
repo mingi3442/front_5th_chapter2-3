@@ -6,7 +6,7 @@ import { Comment } from "../types"
 export const commentApi = (apiClient: ApiClient) => ({
   fetchAllComments: async (postId: number): Promise<CommentResponseDto> => {
     return await apiClient
-      .get<ApiResponse<CommentResponseDto>>(`/api/comments/post/${postId}`)
+      .get<ApiResponse<CommentResponseDto>>(`/comments/post/${postId}`)
       .then((response) => response.data)
       .catch((error) => {
         console.error("FetchAllComments Error: ", error)
@@ -15,7 +15,7 @@ export const commentApi = (apiClient: ApiClient) => ({
   },
   fetchAddComment: async (body: string, postId: number, userId: number): Promise<Comment> => {
     return await apiClient
-      .post<ApiResponse<Comment>>(`/api/comments/add`, { body, postId, userId })
+      .post<ApiResponse<Comment>>(`/comments/add`, { body, postId, userId })
       .then((response) => response.data)
       .catch((error) => {
         console.error("FetchAddComment Error: ", error)
@@ -24,7 +24,7 @@ export const commentApi = (apiClient: ApiClient) => ({
   },
   fetchUpdateComment: async (id: number, body: string): Promise<Comment> => {
     return await apiClient
-      .put<ApiResponse<Comment>>(`/api/comments/${id}`, { body })
+      .put<ApiResponse<Comment>>(`/comments/${id}`, { body })
       .then((response) => response.data)
       .catch((error) => {
         console.error("FetchUpdateComment Error: ", error)
@@ -33,7 +33,7 @@ export const commentApi = (apiClient: ApiClient) => ({
   },
   fetchDeleteComment: async (id: number): Promise<boolean> => {
     return await apiClient
-      .delete<ApiResponse<void>>(`/api/comments/${id}`)
+      .delete<ApiResponse<void>>(`/comments/${id}`)
       .then((response) => response.ok)
       .catch((error) => {
         console.error("FetchDeleteComment Error: ", error)
@@ -42,7 +42,7 @@ export const commentApi = (apiClient: ApiClient) => ({
   },
   fetchLikeComment: async (id: number): Promise<boolean> => {
     return await apiClient
-      .patch<ApiResponse<void>>(`/api/comments/${id}/like`)
+      .patch<ApiResponse<void>>(`/comments/${id}/like`)
       .then((response) => response.ok)
       .catch((error) => {
         console.error("FetchLikeComment Error: ", error)

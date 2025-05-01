@@ -6,7 +6,7 @@ import { Post, Tag } from "../types/post.types"
 export const postApi = (apiClient: ApiClient) => ({
   fetchAllPosts: async (limit: number, skip: number): Promise<PostsResponseDto> => {
     return await apiClient
-      .get<ApiResponse<PostsResponseDto>>(`/api/posts?limit=${limit}&skip=${skip}`)
+      .get<ApiResponse<PostsResponseDto>>(`/posts?limit=${limit}&skip=${skip}`)
       .then((response) => response.data)
       .catch((error) => {
         console.error("FetchAllPosts Error: ", error)
@@ -15,7 +15,7 @@ export const postApi = (apiClient: ApiClient) => ({
   },
   fetchPostsByTag: async (tag: string): Promise<PostsResponseDto> => {
     return await apiClient
-      .get<ApiResponse<PostsResponseDto>>(`/api/posts/tag/${tag}`)
+      .get<ApiResponse<PostsResponseDto>>(`/posts/tag/${tag}`)
       .then((response) => response.data)
       .catch((error) => {
         console.error("FetchPostsByTag Error: ", error)
@@ -24,7 +24,7 @@ export const postApi = (apiClient: ApiClient) => ({
   },
   fetchAllTags: async (): Promise<Tag[]> => {
     return await apiClient
-      .get<ApiResponse<Tag[]>>(`/api/posts/tags`)
+      .get<ApiResponse<Tag[]>>(`/posts/tags`)
       .then((response) => response.data)
       .catch((error) => {
         console.error("FetchAllTags Error: ", error)
@@ -33,7 +33,7 @@ export const postApi = (apiClient: ApiClient) => ({
   },
   fetchSearchPosts: async (searchQuery: string): Promise<PostsResponseDto> => {
     return await apiClient
-      .get<ApiResponse<PostsResponseDto>>(`/api/posts/search?q=${searchQuery}`)
+      .get<ApiResponse<PostsResponseDto>>(`/posts/search?q=${searchQuery}`)
       .then((response) => response.data)
       .catch((error) => {
         console.error("FetchSearchPosts Error: ", error)
@@ -42,7 +42,7 @@ export const postApi = (apiClient: ApiClient) => ({
   },
   fetchAddPost: async (title: string, body: string, userId: number): Promise<Post> => {
     return await apiClient
-      .post<ApiResponse<Post>>(`/api/posts/add`, { title, body, userId })
+      .post<ApiResponse<Post>>(`/posts/add`, { title, body, userId })
       .then((response) => response.data)
       .catch((error) => {
         console.error("FetchAddPost Error: ", error)
@@ -51,7 +51,7 @@ export const postApi = (apiClient: ApiClient) => ({
   },
   fetchUpdatePost: async (post: Post): Promise<Post> => {
     return await apiClient
-      .put<ApiResponse<Post>>(`/api/posts/${post.id}`, post)
+      .put<ApiResponse<Post>>(`/posts/${post.id}`, post)
       .then((response) => response.data)
       .catch((error) => {
         console.error("FetchUpdatePost Error: ", error)
@@ -60,7 +60,7 @@ export const postApi = (apiClient: ApiClient) => ({
   },
   fetchDeletePost: async (id: number): Promise<Post> => {
     return await apiClient
-      .delete<ApiResponse<Post>>(`/api/posts/${id}`)
+      .delete<ApiResponse<Post>>(`/posts/${id}`)
       .then((response) => response.data)
       .catch((error) => {
         console.error("FetchDeletePost Error: ", error)

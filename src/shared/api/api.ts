@@ -101,7 +101,7 @@ const getBaseURL = () => {
   if (import.meta.env.PROD) {
     return "https://dummyjson.com"
   }
-  return ""
+  return "/api"
 }
 
 export const apiClient = new ApiClient({ baseURL: getBaseURL() })
