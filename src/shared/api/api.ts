@@ -97,4 +97,11 @@ export class ApiClient {
   }
 }
 
-export const apiClient = new ApiClient({ baseURL: "" })
+const getBaseURL = () => {
+  if (import.meta.env.PROD) {
+    return "https://dummyjson.com"
+  }
+  return ""
+}
+
+export const apiClient = new ApiClient({ baseURL: getBaseURL() })
