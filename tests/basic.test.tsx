@@ -1,12 +1,13 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import "@testing-library/jest-dom"
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { http, HttpResponse } from "msw"
 import { setupServer } from "msw/node"
-import { MemoryRouter } from "react-router-dom"
-import PostsManager from "../src/pages/PostsManagerPage"
 import * as React from "react"
-import "@testing-library/jest-dom"
+import { MemoryRouter } from "react-router-dom"
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest"
+import { PostsManagerPage } from "../src/pages/posts/manager/PostsManagerPage"
 import { TEST_POSTS, TEST_SEARCH_POST, TEST_USERS } from "./mockData"
 
 // MSW 서버 설정
@@ -43,16 +44,28 @@ beforeAll(() => server.listen({ onUnhandledRequest: "error" }))
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
-// 테스트에 공통으로 사용될 render 함수
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      staleTime: 0,
+    },
+  },
+})
 const renderPostsManager = () => {
   return render(
-    <MemoryRouter>
-      <PostsManager />
-    </MemoryRouter>,
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter>
+        <PostsManagerPage />
+      </MemoryRouter>
+    </QueryClientProvider>,
   )
 }
 
 describe("PostsManager", () => {
+  beforeEach(() => {
+    queryClient.clear()
+  })
   it("게시물을 렌더링하고 검색을 허용합니다", async () => {
     const user = userEvent.setup()
     renderPostsManager()
@@ -120,6 +133,14 @@ describe("PostsManager", () => {
 
     const submitButton = screen.getByRole("button", { name: /게시물 추가/i })
     await user.click(submitButton)
+    queryClient.setQueryData(["posts", { limit: 10, skip: 0 }], (oldData: typeof TEST_POSTS) => {
+      if (!oldData) return { posts: [NEW_POST], total: 1 }
+      return {
+        ...oldData,
+        posts: [NEW_POST, ...oldData.posts],
+        total: oldData.total + 1,
+      }
+    })
 
     // 새 게시물이 추가되었는지 확인
     await waitFor(() => {

@@ -1,0 +1,5 @@
+export { useAddComment } from "./useAddComment"
+export { useDeleteComment } from "./useDeleteComment"
+export { useGetCommentsByPostId } from "./useGetCommentsByPostId"
+export { useLikeComment } from "./useLikeComment"
+export { useUpdateComment } from "./useUpdateComment"
