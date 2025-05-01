@@ -65,7 +65,7 @@ const createQueryParamsStore = <T extends QueryParamDefaults>(defaults: T) => {
       setSearchParams(urlParams, { replace: true })
     }, [queryParams, setSearchParams])
 
-    return [queryParams, setQueryParams]
+    return [queryParams, setQueryParams] as const
   }
 }
 export const usePostsQueryParams = createQueryParamsStore({
