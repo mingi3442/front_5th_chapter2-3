@@ -3,6 +3,7 @@ import { PostWithAuthor } from "@/entities/post/types"
 import { userApi } from "@/entities/user/api"
 import { PostService } from "@/features/post/services"
 import { apiClient, queryClient } from "@/shared/api"
+import { usePostsQueryParams } from "@/shared/stores/query-params"
 import { useMutation } from "@tanstack/react-query"
 import { PostsWithResult } from "../types"
 
@@ -14,6 +15,7 @@ type AddPostParams = {
 }
 
 export const useAddPost = () => {
+  const [{ limit, skip }] = usePostsQueryParams()
   return useMutation<PostWithAuthor, Error, AddPostParams>({
     mutationFn: async ({ title, body, userId, tags }) => {
       const service = PostService(postApi(apiClient), userApi(apiClient))
@@ -28,7 +30,7 @@ export const useAddPost = () => {
     },
 
     onSuccess: (newPost) => {
-      queryClient.setQueryData(POST_QUERY_KEY.list({ limit: 10, skip: 0 }), (oldData: PostsWithResult | undefined) => {
+      queryClient.setQueryData(POST_QUERY_KEY.list({ limit, skip }), (oldData: PostsWithResult | undefined) => {
         if (!oldData) return { posts: [newPost], total: 1 }
         return {
           ...oldData,
@@ -37,9 +39,8 @@ export const useAddPost = () => {
         }
       })
 
-      // * 검색 쿼리 무효화
       queryClient.invalidateQueries({
-        queryKey: POST_QUERY_KEY.search(""),
+        queryKey: POST_QUERY_KEY.list({ limit, skip }),
         refetchType: "none",
       })
     },

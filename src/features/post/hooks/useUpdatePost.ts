@@ -19,7 +19,7 @@ export const useUpdatePost = () => {
       const postService = PostService(postApi(apiClient), userApi(apiClient))
 
       const updatedPost = await postService.updatePost({ id, title, body, tags })
-      if (!updatedPost) throw new Error("게시물 업데이트 실패")
+      if (!updatedPost) throw new Error(`useUpdatePost: Failed to update post with id: ${id}`)
 
       const { users } = await userApi(apiClient).fetchAllUserProfiles()
       const author = users.find((user) => user.id === updatedPost.userId)

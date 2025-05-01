@@ -54,7 +54,6 @@ export const useGetPosts = (options: GetPostsOptions = {}) => {
       return result
     },
     enabled: isEnabled,
-    staleTime: 60000,
   })
 }
 
@@ -66,10 +65,9 @@ export const useGetPostById = (id: number, enabled: boolean = !!id) => {
       const result = await service.getAllPosts(1, 0)
       const post = result.posts.find((post) => post.id === id)
 
-      if (!post) throw new Error(`ID ${id}에 해당하는 게시물을 찾을 수 없습니다`)
+      if (!post) throw new Error(`useGetPostById: Post not found with id: ${id}`)
       return post
     },
     enabled,
-    staleTime: 60000,
   })
 }

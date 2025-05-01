@@ -25,7 +25,6 @@ export const PostListItem = ({ post, ...props }: PostListItemProps) => {
       const result = await deletePostMutation.mutateAsync({ id })
 
       if (!result) return
-      else handleOpenPostDetailModal()
     } catch (error) {
       console.error("deletePost error:", error)
     }
