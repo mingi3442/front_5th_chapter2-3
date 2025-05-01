@@ -1,8 +1,9 @@
 import { POST_QUERY_KEY, postApi } from "@/entities/post/api"
 import { userApi } from "@/entities/user/api"
-import { PostService, PostsWithResult } from "@/features/post/services"
+import { PostService } from "@/features/post/services"
 import { apiClient, queryClient } from "@/shared/api"
 import { useMutation } from "@tanstack/react-query"
+import { PostsWithResult } from "../types"
 
 type DeletePostParams = {
   id: number

@@ -1,1 +1,1 @@
-export { PostService, type PostsWithResult } from "./post.service"
+export { PostService } from "./post.service"

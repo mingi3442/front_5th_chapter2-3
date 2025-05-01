@@ -16,6 +16,7 @@ export const AddPostModal: React.FC = () => {
         title: newPost.title,
         body: newPost.body,
         userId: newPost.userId,
+        tags: [],
       })
 
       setNewPost({ title: "", body: "", userId: 1 })
