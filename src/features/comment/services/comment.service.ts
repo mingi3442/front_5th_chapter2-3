@@ -4,7 +4,7 @@ import { Comment } from "@/entities/comment/types/comment.types"
 export const CommentService = (commentApiClient: ReturnType<typeof commentApi>) => ({
   getAllComments: async (postId: number): Promise<Comment[]> => {
     try {
-      const { comments } = await commentApiClient.fetchAllComments(postId)
+      const { comments } = await commentApiClient.listByPost(postId)
       if (!comments) return []
       return comments
     } catch (error) {
@@ -14,7 +14,7 @@ export const CommentService = (commentApiClient: ReturnType<typeof commentApi>) 
   },
   addComment: async (body: string, postId: number, userId: number): Promise<Comment> => {
     try {
-      const result = await commentApiClient.fetchAddComment(body, postId, userId)
+      const result = await commentApiClient.create(body, postId, userId)
       return result
     } catch (error) {
       console.error("AddComment Error:", error)
@@ -23,7 +23,7 @@ export const CommentService = (commentApiClient: ReturnType<typeof commentApi>) 
   },
   updateComment: async (id: number, body: string): Promise<Comment> => {
     try {
-      const result = await commentApiClient.fetchUpdateComment(id, body)
+      const result = await commentApiClient.update(id, body)
       return result
     } catch (error) {
       console.error("UpdateComment Error:", error)
@@ -32,7 +32,7 @@ export const CommentService = (commentApiClient: ReturnType<typeof commentApi>) 
   },
   deleteComment: async (id: number): Promise<boolean> => {
     try {
-      const result = await commentApiClient.fetchDeleteComment(id)
+      const result = await commentApiClient.remove(id)
       if (result) return false
       return true
     } catch (error) {
@@ -42,7 +42,7 @@ export const CommentService = (commentApiClient: ReturnType<typeof commentApi>) 
   },
   likeComment: async (id: number): Promise<boolean> => {
     try {
-      const result = await commentApiClient.fetchLikeComment(id)
+      const result = await commentApiClient.likeComment(id)
       if (!result) return false
       return true
     } catch (error) {

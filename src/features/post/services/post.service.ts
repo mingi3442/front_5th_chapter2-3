@@ -7,10 +7,10 @@ import { PostsWithResult } from "../types"
 export const PostService = (postApiClient: ReturnType<typeof postApi>, userApiClient: ReturnType<typeof userApi>) => ({
   getAllPosts: async (limit: number, skip: number): Promise<PostsWithResult> => {
     try {
-      const postsData = await postApiClient.fetchAllPosts(limit, skip)
+      const postsData = await postApiClient.list(limit, skip)
       if (!postsData) return { posts: [], total: 0 }
 
-      const usersResponse = await userApiClient.fetchAllUserProfiles()
+      const usersResponse = await userApiClient.list()
       const usersData = usersResponse.users
 
       const postsWithUsers = postsData.posts.map((post: Post) => ({
@@ -29,10 +29,7 @@ export const PostService = (postApiClient: ReturnType<typeof postApi>, userApiCl
   },
   getPostsByTag: async (tag: string): Promise<PostsWithResult> => {
     try {
-      const [postsResponse, usersResponse] = await Promise.all([
-        postApiClient.fetchPostsByTag(tag),
-        userApiClient.fetchAllUserProfiles(),
-      ])
+      const [postsResponse, usersResponse] = await Promise.all([postApiClient.listByTag(tag), userApiClient.list()])
       const postsWithUsers = postsResponse.posts.map((post: Post) => ({
         ...post,
         author: usersResponse.users.find((user) => user.id === post.userId),
@@ -48,7 +45,7 @@ export const PostService = (postApiClient: ReturnType<typeof postApi>, userApiCl
   },
   getAllTags: async () => {
     try {
-      const result = await postApiClient.fetchAllTags()
+      const result = await postApiClient.getAllTags()
       if (!result) return []
       return result
     } catch (error) {
@@ -58,7 +55,7 @@ export const PostService = (postApiClient: ReturnType<typeof postApi>, userApiCl
   },
   searchPosts: async (searchQuery: string): Promise<PostsWithResult> => {
     try {
-      const result = await postApiClient.fetchSearchPosts(searchQuery)
+      const result = await postApiClient.search(searchQuery)
       if (!result) return { posts: [], total: 0 }
       return {
         posts: result.posts,
@@ -71,9 +68,9 @@ export const PostService = (postApiClient: ReturnType<typeof postApi>, userApiCl
   },
   addPost: async (title: string, body: string, userId: number) => {
     try {
-      const result = await postApiClient.fetchAddPost(title, body, userId)
+      const result = await postApiClient.create(title, body, userId)
       if (!result) return null
-      const { users } = await userApiClient.fetchAllUserProfiles()
+      const { users } = await userApiClient.list()
       const author = users.find((user) => user.id === userId)
 
       return {
@@ -87,9 +84,16 @@ export const PostService = (postApiClient: ReturnType<typeof postApi>, userApiCl
   },
   updatePost: async (post: Post) => {
     try {
-      const result = await postApiClient.fetchUpdatePost(post)
-      if (!result) return null
-      return result
+      const result = await postApiClient.update(post)
+      if (!result) {
+        throw new Error(`Failed to update post with id: ${post.id}`)
+      }
+      const { users } = await userApiClient.list()
+      const author = users.find((user) => user.id === result.userId)
+      return {
+        ...result,
+        author,
+      }
     } catch (error) {
       console.error("PostService updatePost Error:", error)
       throw error
@@ -97,7 +101,7 @@ export const PostService = (postApiClient: ReturnType<typeof postApi>, userApiCl
   },
   deletePost: async (id: number) => {
     try {
-      const result = await postApiClient.fetchDeletePost(id)
+      const result = await postApiClient.remove(id)
       if (!result) return null
       return result
     } catch (error) {

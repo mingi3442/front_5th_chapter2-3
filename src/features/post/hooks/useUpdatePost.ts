@@ -21,16 +21,8 @@ export const useUpdatePost = () => {
       const updatedPost = await postService.updatePost({ id, title, body, tags })
       if (!updatedPost) throw new Error(`useUpdatePost: Failed to update post with id: ${id}`)
 
-      const { users } = await userApi(apiClient).fetchAllUserProfiles()
-      const author = users.find((user) => user.id === updatedPost.userId)
-
       return {
         ...updatedPost,
-        id,
-        title,
-        body,
-        author,
-        tags,
         reactions: updatedPost.reactions || { likes: 0, dislikes: 0 },
       }
     },

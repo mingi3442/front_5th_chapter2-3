@@ -4,66 +4,66 @@ import { PostsResponseDto } from "../dto/post.dto"
 import { Post, Tag } from "../types/post.types"
 
 export const postApi = (apiClient: ApiClient) => ({
-  fetchAllPosts: async (limit: number, skip: number): Promise<PostsResponseDto> => {
+  list: async (limit: number, skip: number): Promise<PostsResponseDto> => {
     return await apiClient
       .get<ApiResponse<PostsResponseDto>>(`/posts?limit=${limit}&skip=${skip}`)
       .then((response) => response.data)
       .catch((error) => {
-        console.error("FetchAllPosts Error: ", error)
+        console.error("Posts List Error: ", error)
         return error
       })
   },
-  fetchPostsByTag: async (tag: string): Promise<PostsResponseDto> => {
+  listByTag: async (tag: string): Promise<PostsResponseDto> => {
     return await apiClient
       .get<ApiResponse<PostsResponseDto>>(`/posts/tag/${tag}`)
       .then((response) => response.data)
       .catch((error) => {
-        console.error("FetchPostsByTag Error: ", error)
+        console.error("Posts by Tag Error: ", error)
         return error
       })
   },
-  fetchAllTags: async (): Promise<Tag[]> => {
+  getAllTags: async (): Promise<Tag[]> => {
     return await apiClient
       .get<ApiResponse<Tag[]>>(`/posts/tags`)
       .then((response) => response.data)
       .catch((error) => {
-        console.error("FetchAllTags Error: ", error)
+        console.error("Tags List Error: ", error)
         return error
       })
   },
-  fetchSearchPosts: async (searchQuery: string): Promise<PostsResponseDto> => {
+  search: async (searchQuery: string): Promise<PostsResponseDto> => {
     return await apiClient
       .get<ApiResponse<PostsResponseDto>>(`/posts/search?q=${searchQuery}`)
       .then((response) => response.data)
       .catch((error) => {
-        console.error("FetchSearchPosts Error: ", error)
+        console.error("Posts Search Error: ", error)
         return error
       })
   },
-  fetchAddPost: async (title: string, body: string, userId: number): Promise<Post> => {
+  create: async (title: string, body: string, userId: number): Promise<Post> => {
     return await apiClient
       .post<ApiResponse<Post>>(`/posts/add`, { title, body, userId })
       .then((response) => response.data)
       .catch((error) => {
-        console.error("FetchAddPost Error: ", error)
+        console.error("Post Create Error: ", error)
         return error
       })
   },
-  fetchUpdatePost: async (post: Post): Promise<Post> => {
+  update: async (post: Post): Promise<Post> => {
     return await apiClient
       .put<ApiResponse<Post>>(`/posts/${post.id}`, post)
       .then((response) => response.data)
       .catch((error) => {
-        console.error("FetchUpdatePost Error: ", error)
+        console.error("Post Update Error: ", error)
         return error
       })
   },
-  fetchDeletePost: async (id: number): Promise<Post> => {
+  remove: async (id: number): Promise<Post> => {
     return await apiClient
       .delete<ApiResponse<Post>>(`/posts/${id}`)
       .then((response) => response.data)
       .catch((error) => {
-        console.error("FetchDeletePost Error: ", error)
+        console.error("Post Remove Error: ", error)
         return error
       })
   },

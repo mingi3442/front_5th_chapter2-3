@@ -4,23 +4,21 @@ import { AllUserProfilesResponseDto } from "../dto/user.dto"
 import { User } from "../types"
 
 export const userApi = (apiClient: ApiClient) => ({
-  fetchAllUserProfiles: async (): Promise<AllUserProfilesResponseDto> => {
+  list: async (): Promise<AllUserProfilesResponseDto> => {
     return await apiClient
       .get<ApiResponse<AllUserProfilesResponseDto>>(`/users?limit=0&select=username,image`)
-      .then((response) => {
-        return response.data
-      })
+      .then((response) => response.data)
       .catch((error) => {
-        console.error("FetchAllUserProfiles Error: ", error)
+        console.error("Users List Error: ", error)
         return error
       })
   },
-  fetchGetUserProfile: async (userId: number): Promise<User> => {
+  getProfile: async (userId: number): Promise<User> => {
     return await apiClient
       .get<ApiResponse<User>>(`/users/${userId}`)
       .then((response) => response.data)
       .catch((error) => {
-        console.error("FetchGetUserProfile Error: ", error)
+        console.error("User Profile Error: ", error)
         return error
       })
   },
