@@ -1,9 +1,13 @@
-import { User } from "@/entities/user/types/user.types"
+export interface UserReference {
+  id: number
+  username: string
+  fullName: string
+}
 
 export interface Comment {
   body: string
   id: number
   likes: number
   postId: number
-  user: User
+  user: UserReference
 }

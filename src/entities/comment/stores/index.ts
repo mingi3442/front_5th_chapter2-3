@@ -1,1 +1,1 @@
-export { useCommentStore } from "./comment.store"
+export { useCommentStore } from "./comment-store"

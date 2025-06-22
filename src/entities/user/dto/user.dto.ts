@@ -1,11 +1,11 @@
 import { Pagination } from "@/shared/types"
 
-export interface UserProfileResponseDto {
+export interface UserDto {
   id: number
   image: string
   username: string
 }
 
-export interface AllUserProfilesResponseDto extends Pagination {
-  users: UserProfileResponseDto[]
+export interface AllUserProfilesResponse extends Pagination {
+  users: UserDto[]
 }

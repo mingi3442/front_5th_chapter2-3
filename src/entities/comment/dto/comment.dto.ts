@@ -1,6 +1,14 @@
+import { UserReference } from "@/entities/comment/types"
 import { Pagination } from "@/shared/types"
-import { Comment } from "../types/comment.types"
+
+export interface CommentDto {
+  id: number
+  body: string
+  postId: number
+  likes: number
+  user: UserReference
+}
 
 export interface CommentResponseDto extends Pagination {
-  comments: Comment[]
+  comments: CommentDto[]
 }

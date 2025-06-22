@@ -1,4 +1,4 @@
-import { Post } from "@/entities/post/types"
+import { Post, Tag } from "@/entities/post/types"
 import { PostsWithResult } from "../types"
 
 export interface PostUseCase {

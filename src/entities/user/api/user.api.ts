@@ -1,12 +1,12 @@
 import { ApiClient } from "@/shared/api/api"
 import { ApiResponse } from "@/shared/types"
-import { AllUserProfilesResponseDto } from "../dto/user.dto"
+import { AllUserProfilesResponse } from "../dto/user.dto"
 import { User } from "../types"
 
 export const userApi = (apiClient: ApiClient) => ({
-  list: async (): Promise<AllUserProfilesResponseDto> => {
+  list: async (): Promise<AllUserProfilesResponse> => {
     return await apiClient
-      .get<ApiResponse<AllUserProfilesResponseDto>>(`/users?limit=0&select=username,image`)
+      .get<ApiResponse<AllUserProfilesResponse>>(`/users?limit=0&select=username,image`)
       .then((response) => response.data)
       .catch((error) => {
         console.error("Users List Error: ", error)

@@ -1,7 +1,7 @@
-import { COMMENT_QUERY_KEY, commentApi } from "@/entities/comment/api"
+import { COMMENT_QUERY_KEY } from "@/entities/comment/api"
 import { Comment } from "@/entities/comment/types"
-import { CommentService } from "@/features/comment/services"
-import { apiClient, queryClient } from "@/shared/api"
+import { commentService } from "@/features/comment/services"
+import { queryClient } from "@/shared/api"
 import { useMutation } from "@tanstack/react-query"
 
 type UpdateCommentParams = {
@@ -12,7 +12,7 @@ type UpdateCommentParams = {
 export const useUpdateComment = () => {
   return useMutation<Comment, Error, UpdateCommentParams>({
     mutationFn: async ({ id, body }) => {
-      const result = await CommentService(commentApi(apiClient)).updateComment(id, body)
+      const result = await commentService.updateComment(id, body)
 
       return result
     },

@@ -1,7 +1,8 @@
-import { COMMENT_QUERY_KEY, commentApi } from "@/entities/comment/api"
+import { COMMENT_QUERY_KEY } from "@/entities/comment/api"
 import { Comment } from "@/entities/comment/types"
-import { CommentService } from "@/features/comment/services"
-import { apiClient, queryClient } from "@/shared/api"
+import { commentService } from "@/features/comment/services"
+
+import { queryClient } from "@/shared/api"
 import { useMutation } from "@tanstack/react-query"
 
 type AddCommentParams = {
@@ -13,7 +14,7 @@ type AddCommentParams = {
 export const useAddComment = () => {
   return useMutation<Comment, Error, AddCommentParams>({
     mutationFn: async ({ body, postId, userId }) => {
-      const result = await CommentService(commentApi(apiClient)).addComment(body, postId, userId)
+      const result = await commentService.addComment(body, postId, userId)
       return result
     },
 
