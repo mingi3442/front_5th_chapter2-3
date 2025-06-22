@@ -1,5 +1,4 @@
-import { Comment } from '../../../entities/comment/types';
-
+import { Comment } from "@/entities/comment/types"
 
 export interface CommentUseCase {
   getAllComments: (postId: number) => Promise<Comment[]>
