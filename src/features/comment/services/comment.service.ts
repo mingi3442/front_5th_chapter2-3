@@ -1,7 +1,8 @@
-import { commentApi } from "@/entities/comment/api"
-import { Comment } from "@/entities/comment/types/comment.types"
+import { commentApi } from "@/entities/comment/api";
+import { Comment } from "@/entities/comment/types/comment.types";
+import { CommentUseCase } from '../usecase/comment.usecase';
 
-export const CommentService = (commentApiClient: ReturnType<typeof commentApi>) => ({
+export const CommentService = (commentApiClient: ReturnType<typeof commentApi>):CommentUseCase => ({
   getAllComments: async (postId: number): Promise<Comment[]> => {
     try {
       const { comments } = await commentApiClient.listByPost(postId)

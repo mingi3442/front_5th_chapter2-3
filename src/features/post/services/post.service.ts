@@ -2,10 +2,13 @@ import { postApi } from "@/entities/post/api"
 import { Post } from "@/entities/post/types"
 import { userApi } from "@/entities/user/api"
 import { User } from "@/entities/user/types"
-import { PostsWithResult } from "../types"
+import { PostUseCase } from "../usecase/post.usecase"
 
-export const PostService = (postApiClient: ReturnType<typeof postApi>, userApiClient: ReturnType<typeof userApi>) => ({
-  getAllPosts: async (limit: number, skip: number): Promise<PostsWithResult> => {
+export const PostService = (
+  postApiClient: ReturnType<typeof postApi>,
+  userApiClient: ReturnType<typeof userApi>,
+): PostUseCase => ({
+  getAllPosts: async (limit: number, skip: number) => {
     try {
       const postsData = await postApiClient.list(limit, skip)
       if (!postsData) return { posts: [], total: 0 }
@@ -27,7 +30,7 @@ export const PostService = (postApiClient: ReturnType<typeof postApi>, userApiCl
       return { posts: [], total: 0 }
     }
   },
-  getPostsByTag: async (tag: string): Promise<PostsWithResult> => {
+  getPostsByTag: async (tag: string) => {
     try {
       const [postsResponse, usersResponse] = await Promise.all([postApiClient.listByTag(tag), userApiClient.list()])
       const postsWithUsers = postsResponse.posts.map((post: Post) => ({
@@ -53,7 +56,7 @@ export const PostService = (postApiClient: ReturnType<typeof postApi>, userApiCl
       throw error
     }
   },
-  searchPosts: async (searchQuery: string): Promise<PostsWithResult> => {
+  searchPosts: async (searchQuery: string) => {
     try {
       const result = await postApiClient.search(searchQuery)
       if (!result) return { posts: [], total: 0 }

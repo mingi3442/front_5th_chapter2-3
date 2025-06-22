@@ -1,7 +1,8 @@
-import { userApi } from "@/entities/user/api"
-import { User } from "@/entities/user/types"
+import { userApi } from "@/entities/user/api";
+import { User } from "@/entities/user/types";
+import { UserUseCase } from '../usecase/user.usecase';
 
-export const UserService = (userApiClient: ReturnType<typeof userApi>) => ({
+export const UserService = (userApiClient: ReturnType<typeof userApi>) :UserUseCase=> ({
   getUserProfile: async (userId: number): Promise<User> => {
     try {
       const result = await userApiClient.getProfile(userId)
