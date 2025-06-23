@@ -1,9 +1,7 @@
-import { userApi } from "@/entities/user/api"
 import { USER_QUERY_KEY } from "@/entities/user/api/user.query-key"
 import { useUserStore } from "@/entities/user/store"
 import { UserView } from "@/entities/user/ui"
-import { UserService } from "@/features/user/services/user.service"
-import { apiClient } from "@/shared/api"
+import { userService } from "@/features/user/services"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, Loading } from "@/shared/ui"
 import { useQuery } from "@tanstack/react-query"
 import React from "react"
@@ -15,7 +13,7 @@ export const UserProfileModal: React.FC = () => {
 
   const { data: userProfile, isLoading } = useQuery({
     queryKey: USER_QUERY_KEY.profile(id),
-    queryFn: () => UserService(userApi(apiClient)).getUserProfile(id),
+    queryFn: () => userService.getUserProfile(id),
   })
 
   if (isLoading || !userProfile) return <Loading />

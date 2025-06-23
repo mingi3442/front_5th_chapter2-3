@@ -1,10 +1,10 @@
-import { userApi } from "@/entities/user/api"
+import { UserRepository } from "@/entities/user/repository"
 import { UserUseCase } from "../usecase/user.usecase"
 
-export const UserService = (userApiClient: ReturnType<typeof userApi>): UserUseCase => ({
+export const UserService = (userRepository: UserRepository): UserUseCase => ({
   getUserProfile: async (userId: number) => {
     try {
-      const result = await userApiClient.getProfile(userId)
+      const result = await userRepository.getUserProfile(userId)
       return result
     } catch (error) {
       console.error("UserService getUserProfile Error:", error)
