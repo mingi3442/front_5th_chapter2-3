@@ -1,12 +1,12 @@
 import { postApi } from "@/entities/post/api"
 import { Post } from "@/entities/post/types"
-import { userApi } from "@/entities/user/api"
+import { userAdapter } from "@/entities/user/api"
 import { UserProfileDto } from "@/entities/user/dto/user.dto"
 import { PostUseCase } from "../usecase/post.usecase"
 
 export const PostService = (
   postApiClient: ReturnType<typeof postApi>,
-  userApiClient: ReturnType<typeof userApi>,
+  userApiClient: ReturnType<typeof userAdapter>,
 ): PostUseCase => ({
   getAllPosts: async (limit: number, skip: number) => {
     try {

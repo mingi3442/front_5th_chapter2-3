@@ -1,7 +1,7 @@
 import { POST_QUERY_KEY, postApi } from "@/entities/post/api"
 import { usePostTotalStore } from "@/entities/post/stores/post-total.stores"
 import { PostWithAuthor } from "@/entities/post/types"
-import { userApi } from "@/entities/user/api"
+import { userAdapter } from "@/entities/user/api"
 import { PostService } from "@/features/post/services"
 import { apiClient } from "@/shared/api"
 import { useQuery } from "@tanstack/react-query"
@@ -39,7 +39,7 @@ export const useGetPosts = (options: GetPostsOptions = {}) => {
   return useQuery({
     queryKey,
     queryFn: async () => {
-      const service = PostService(postApi(apiClient), userApi(apiClient))
+      const service = PostService(postApi(apiClient), userAdapter(apiClient))
       let result
 
       if (isSearchQuery) {
@@ -61,7 +61,7 @@ export const useGetPostById = (id: number, enabled: boolean = !!id) => {
   return useQuery<PostWithAuthor, Error>({
     queryKey: POST_QUERY_KEY.detail(id),
     queryFn: async () => {
-      const service = PostService(postApi(apiClient), userApi(apiClient))
+      const service = PostService(postApi(apiClient), userAdapter(apiClient))
       const result = await service.getAllPosts(1, 0)
       const post = result.posts.find((post) => post.id === id)
 

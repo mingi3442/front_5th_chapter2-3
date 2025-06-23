@@ -1,5 +1,5 @@
 import { POST_QUERY_KEY, postApi } from "@/entities/post/api"
-import { userApi } from "@/entities/user/api"
+import { userAdapter } from "@/entities/user/api"
 import { PostService } from "@/features/post/services"
 import { apiClient, queryClient } from "@/shared/api"
 import { useMutation } from "@tanstack/react-query"
@@ -12,7 +12,7 @@ type DeletePostParams = {
 export const useDeletePost = () => {
   return useMutation<{ result: boolean; id: number }, Error, DeletePostParams>({
     mutationFn: async ({ id }) => {
-      const deletedPost = await PostService(postApi(apiClient), userApi(apiClient)).deletePost(id)
+      const deletedPost = await PostService(postApi(apiClient), userAdapter(apiClient)).deletePost(id)
       return { result: !!deletedPost, id }
     },
 

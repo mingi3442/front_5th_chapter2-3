@@ -1,6 +1,6 @@
 import { POST_QUERY_KEY, postApi } from "@/entities/post/api"
 import { PostWithAuthor } from "@/entities/post/types"
-import { userApi } from "@/entities/user/api"
+import { userAdapter } from "@/entities/user/api"
 import { PostService } from "@/features/post/services"
 import { apiClient, queryClient } from "@/shared/api"
 import { useMutation } from "@tanstack/react-query"
@@ -16,7 +16,7 @@ interface UpdatePostParams {
 export const useUpdatePost = () => {
   return useMutation<PostWithAuthor, Error, UpdatePostParams>({
     mutationFn: async ({ id, title, body, tags }) => {
-      const postService = PostService(postApi(apiClient), userApi(apiClient))
+      const postService = PostService(postApi(apiClient), userAdapter(apiClient))
 
       const updatedPost = await postService.updatePost({ id, title, body, tags })
       if (!updatedPost) throw new Error(`useUpdatePost: Failed to update post with id: ${id}`)

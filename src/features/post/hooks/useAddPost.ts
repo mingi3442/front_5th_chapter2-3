@@ -1,6 +1,6 @@
 import { POST_QUERY_KEY, postApi } from "@/entities/post/api"
 import { PostWithAuthor } from "@/entities/post/types"
-import { userApi } from "@/entities/user/api"
+import { userAdapter } from "@/entities/user/api"
 import { PostService } from "@/features/post/services"
 import { apiClient, queryClient } from "@/shared/api"
 import { usePostsQueryParams } from "@/shared/stores/query-params"
@@ -18,7 +18,7 @@ export const useAddPost = () => {
   const [{ limit, skip }] = usePostsQueryParams()
   return useMutation<PostWithAuthor, Error, AddPostParams>({
     mutationFn: async ({ title, body, userId, tags }) => {
-      const service = PostService(postApi(apiClient), userApi(apiClient))
+      const service = PostService(postApi(apiClient), userAdapter(apiClient))
       const newPostWithAuthor = await service.addPost(title, body, userId)
       if (!newPostWithAuthor) throw new Error("Error: Fail to add post")
 

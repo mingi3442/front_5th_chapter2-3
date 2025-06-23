@@ -1,5 +1,5 @@
 import { postApi } from "@/entities/post/api"
-import { userApi } from "@/entities/user/api"
+import { userAdapter } from "@/entities/user/api"
 import { PostService } from "@/features/post/services"
 import { apiClient } from "@/shared/api"
 import { useDebounce } from "@/shared/hooks/useDebounce"
@@ -18,7 +18,7 @@ export const FilterController: React.FC = () => {
 
   const { data: tags } = useQuery({
     queryKey: ["tags"],
-    queryFn: () => PostService(postApi(apiClient), userApi(apiClient)).getAllTags(),
+    queryFn: () => PostService(postApi(apiClient), userAdapter(apiClient)).getAllTags(),
   })
 
   useEffect(() => {
