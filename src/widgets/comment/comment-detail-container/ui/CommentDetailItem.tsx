@@ -1,13 +1,13 @@
-import { Comment } from "@/entities/comment/types"
+import { CommentDto } from "@/entities/comment/dto"
 import { CommentView } from "@/entities/comment/ui"
 import { Button } from "@/shared/ui"
 import { Edit2, ThumbsUp, Trash2 } from "lucide-react"
 
 interface CommentDetailItemProps {
-  comment: Comment
+  comment: CommentDto
   searchQuery: string
   handleClickDeleteComment: (commentId: number, postId: number) => void
-  handleClickEditComment: (comment: Comment) => void
+  handleClickEditComment: (comment: CommentDto) => void
   handleClickLikeComment: (commentId: number, postId: number) => void
   postId: number
 }

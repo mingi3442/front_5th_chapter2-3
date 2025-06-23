@@ -1,1 +1,1 @@
-export { type Comment, type UserReference } from "./comment.types"
+export { type CommentData, type UserReference } from "./comment.types"

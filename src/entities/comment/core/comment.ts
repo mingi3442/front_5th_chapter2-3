@@ -1,7 +1,7 @@
 import { CommentDto } from "@/entities/comment/dto"
-import { UserReference } from "@/entities/comment/types"
+import { CommentData, UserReference } from "@/entities/comment/types"
 
-export class Comment {
+export class Comment implements CommentData {
   private _body: string
   private _likes: number
   private _updatedAt: Date | null = null
@@ -73,7 +73,7 @@ export class Comment {
   }
 
   // DTO 변환 메소드
-  toDTO(): CommentDto {
+  toDto(): CommentDto {
     return {
       id: this.id,
       body: this.body,

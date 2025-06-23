@@ -1,7 +1,8 @@
 import { CommentDataSource } from "@/entities/comment/api/comment-api-adapter"
 import { CommentFactory } from "@/entities/comment/core/comment-factory"
-import { Comment as CommentDTO } from "@/entities/comment/types/comment.types"
-import { userApi } from "@/entities/user/api/user.api"
+
+import { CommentDto } from "@/entities/comment/dto"
+import { userApi } from "@/entities/user/api/user-api"
 import { apiClient } from "@/shared/api/api"
 import { CommentUseCase } from "../usecase/comment.usecase"
 
@@ -9,19 +10,19 @@ import { CommentUseCase } from "../usecase/comment.usecase"
 const userApiInstance = userApi(apiClient)
 
 export const CommentService = (commentDataSource: CommentDataSource): CommentUseCase => ({
-  getAllComments: async (postId: number): Promise<CommentDTO[]> => {
+  getAllComments: async (postId: number): Promise<CommentDto[]> => {
     try {
       const domainComments = await commentDataSource.getCommentsByPost(postId)
 
       return domainComments.map((comment) => {
-        const dto = comment.toDTO()
+        const dto = comment.toDto()
         return {
           id: dto.id,
           body: dto.body,
           postId: dto.postId,
           likes: dto.likes,
           user: dto.user,
-        } as CommentDTO
+        }
       })
     } catch (error) {
       console.error("GetAllComments Error:", error)
@@ -29,7 +30,7 @@ export const CommentService = (commentDataSource: CommentDataSource): CommentUse
     }
   },
 
-  addComment: async (body: string, postId: number, userId: number): Promise<CommentDTO> => {
+  addComment: async (body: string, postId: number, userId: number) => {
     try {
       // 새 도메인 모델 생성
       const user = await userApiInstance.getProfile(userId)
@@ -40,21 +41,21 @@ export const CommentService = (commentDataSource: CommentDataSource): CommentUse
       if (!savedComment) throw new Error("Failed to create comment")
 
       // 도메인 모델을 DTO로 변환
-      const dto = savedComment.toDTO()
+      const dto = savedComment.toDto()
       return {
         id: dto.id,
         body: dto.body,
         postId: dto.postId,
         likes: dto.likes,
         user: dto.user,
-      } as CommentDTO
+      }
     } catch (error) {
       console.error("AddComment Error:", error)
       throw error
     }
   },
 
-  updateComment: async (id: number, body: string): Promise<CommentDTO> => {
+  updateComment: async (id: number, body: string): Promise<CommentDto> => {
     try {
       // 먼저 기존 도메인 모델 가져오기 (실제로는 별도 메서드가 필요할 수 있음)
       const comments = await commentDataSource.getCommentsByPost(0)
@@ -69,11 +70,11 @@ export const CommentService = (commentDataSource: CommentDataSource): CommentUse
       if (!updatedComment) throw new Error("Failed to update comment")
 
       // 도메인 모델을 DTO로 변환
-      const dto = updatedComment.toDTO()
+      const dto = updatedComment.toDto()
       return {
         ...dto,
         user: dto.user,
-      } as CommentDTO
+      } as CommentDto
     } catch (error) {
       console.error("UpdateComment Error:", error)
       throw error

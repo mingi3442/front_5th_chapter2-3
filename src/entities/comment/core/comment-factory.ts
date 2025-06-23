@@ -7,7 +7,6 @@ export class CommentFactory {
    * 새 댓글 객체를 생성
    */
   static createNew(body: string, postId: number, user: User): Comment {
-    // 임시 ID는 0 또는 음수를 사용하여 아직 저장되지 않았음을 표시
     return new Comment(0, body, postId, {
       id: user.id,
       username: user.username,

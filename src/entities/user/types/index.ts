@@ -1,1 +1,1 @@
-export { type User } from "./user.types"
+export { type UserData } from "./user.types"

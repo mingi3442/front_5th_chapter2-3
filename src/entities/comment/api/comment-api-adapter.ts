@@ -1,3 +1,4 @@
+import { CommentData } from "@/entities/comment/types"
 import { ApiClient } from "@/shared/api/api"
 import { Comment } from "../core/comment"
 import { CommentFactory } from "../core/comment-factory"
@@ -5,8 +6,8 @@ import { commentApi } from "./comment-api"
 
 export interface CommentDataSource {
   getCommentsByPost(postId: number): Promise<Comment[]>
-  createComment(comment: Comment): Promise<Comment | null>
-  updateComment(comment: Comment): Promise<Comment | null>
+  createComment(comment: CommentData): Promise<CommentData | null>
+  updateComment(comment: CommentData): Promise<CommentData | null>
   deleteComment(id: number): Promise<boolean>
   likeComment(id: number): Promise<boolean>
 }
@@ -22,7 +23,6 @@ export class CommentApiAdapter implements CommentDataSource {
     try {
       const { comments } = await this.api.listByPost(postId)
       if (!comments || !comments.length) return []
-      // API 응답을 도메인 모델과 호환되는 형태로 변환
       const adaptedComments = comments.map((apiComment) => ({
         id: apiComment.id,
         body: apiComment.body,
@@ -49,7 +49,7 @@ export class CommentApiAdapter implements CommentDataSource {
     }
   }
 
-  async updateComment(comment: Comment): Promise<Comment | null> {
+  async updateComment(comment: CommentData): Promise<CommentData | null> {
     try {
       const result = await this.api.update(comment.id, comment.body)
       if (!result) return null

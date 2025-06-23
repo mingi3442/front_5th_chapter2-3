@@ -1,7 +1,7 @@
 import { ApiClient } from "@/shared/api/api"
 import { ApiResponse } from "@/shared/types"
 import { CommentResponseDto } from "../dto/comment.dto"
-import { Comment } from "../types"
+import { CommentData } from "../types"
 
 export const commentApi = (apiClient: ApiClient) => ({
   listByPost: async (postId: number): Promise<CommentResponseDto> => {
@@ -13,16 +13,16 @@ export const commentApi = (apiClient: ApiClient) => ({
         return error
       })
   },
-  create: async (body: string, postId: number, userId: number): Promise<Comment> => {
+  create: async (body: string, postId: number, userId: number): Promise<CommentData> => {
     return await apiClient
-      .post<ApiResponse<Comment>>(`/comments/add`, { body, postId, userId })
+      .post<ApiResponse<CommentData>>(`/comments/add`, { body, postId, userId })
       .then((response) => response.data)
       .catch((error) => {
         console.error("Comment Create Error: ", error)
         return error
       })
   },
-  update: async (id: number, body: string): Promise<Comment> => {
+  update: async (id: number, body: string): Promise<CommentData> => {
     return await apiClient
       .put<ApiResponse<Comment>>(`/comments/${id}`, { body })
       .then((response) => response.data)

@@ -1,7 +1,6 @@
 import { ApiClient } from "@/shared/api/api"
 import { ApiResponse } from "@/shared/types"
-import { AllUserProfilesResponse } from "../dto/user.dto"
-import { User } from "../types"
+import { AllUserProfilesResponse, UserDto } from "../dto/user.dto"
 
 export const userApi = (apiClient: ApiClient) => ({
   list: async (): Promise<AllUserProfilesResponse> => {
@@ -13,9 +12,9 @@ export const userApi = (apiClient: ApiClient) => ({
         return error
       })
   },
-  getProfile: async (userId: number): Promise<User> => {
+  getProfile: async (userId: number): Promise<UserDto> => {
     return await apiClient
-      .get<ApiResponse<User>>(`/users/${userId}`)
+      .get<ApiResponse<UserDto>>(`/users/${userId}`)
       .then((response) => response.data)
       .catch((error) => {
         console.error("User Profile Error: ", error)

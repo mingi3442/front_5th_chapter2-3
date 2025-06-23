@@ -1,5 +1,5 @@
+import { CommentDto } from "@/entities/comment/dto"
 import { useCommentStore } from "@/entities/comment/stores"
-import { Comment } from "@/entities/comment/types"
 import { useDeleteComment, useGetCommentsByPostId, useLikeComment } from "@/features/comment/hooks"
 import { Button } from "@/shared/ui"
 import { Plus } from "lucide-react"
@@ -29,7 +29,7 @@ export const CommentDetailContainer: React.FC<CommentDetailContainerProps> = ({ 
   const handleLikeComment = (commentId: number, postId: number) => {
     likeComment({ id: commentId, postId })
   }
-  const handleEditComment = (comment: Comment) => {
+  const handleEditComment = (comment: CommentDto) => {
     setSelectedComment(comment.postId, comment.id, comment.body)
     handleOpenEditCommentModal()
   }

@@ -1,5 +1,5 @@
 import { COMMENT_QUERY_KEY } from "@/entities/comment/api"
-import { Comment } from "@/entities/comment/types"
+import { CommentDto } from "@/entities/comment/dto"
 import { commentService } from "@/features/comment/services"
 
 import { queryClient } from "@/shared/api"
@@ -12,7 +12,7 @@ type AddCommentParams = {
 }
 
 export const useAddComment = () => {
-  return useMutation<Comment, Error, AddCommentParams>({
+  return useMutation<CommentDto, Error, AddCommentParams>({
     mutationFn: async ({ body, postId, userId }) => {
       const result = await commentService.addComment(body, postId, userId)
       return result
