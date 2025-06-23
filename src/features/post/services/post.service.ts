@@ -1,7 +1,7 @@
 import { postApi } from "@/entities/post/api"
 import { Post } from "@/entities/post/types"
 import { userApi } from "@/entities/user/api"
-import { User } from "@/entities/user/types"
+import { UserProfileDto } from "@/entities/user/dto/user.dto"
 import { PostUseCase } from "../usecase/post.usecase"
 
 export const PostService = (
@@ -18,7 +18,7 @@ export const PostService = (
 
       const postsWithUsers = postsData.posts.map((post: Post) => ({
         ...post,
-        author: usersData.find((user: User) => user.id === post.userId),
+        author: usersData.find((user: UserProfileDto) => user.id === post.userId),
       }))
 
       return {

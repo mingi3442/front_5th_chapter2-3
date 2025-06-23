@@ -1,8 +1,8 @@
+import { UserProfileDto } from "@/entities/user/dto/user.dto"
 import React from "react"
-import { User } from "../../types"
 
 interface UserViewProps extends React.HTMLAttributes<HTMLDivElement> {
-  userProfile: User
+  userProfile: UserProfileDto
 }
 
 export const UserView: React.FC<UserViewProps> = ({ userProfile, ...props }) => {

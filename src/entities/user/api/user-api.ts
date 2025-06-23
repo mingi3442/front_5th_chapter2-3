@@ -1,6 +1,6 @@
 import { ApiClient } from "@/shared/api/api"
 import { ApiResponse } from "@/shared/types"
-import { AllUserProfilesResponse, UserDto } from "../dto/user.dto"
+import { AllUserProfilesResponse, UserDto, UserProfileDto } from "../dto/user.dto"
 
 export const userApi = (apiClient: ApiClient) => ({
   list: async (): Promise<AllUserProfilesResponse> => {
@@ -12,7 +12,7 @@ export const userApi = (apiClient: ApiClient) => ({
         return error
       })
   },
-  getProfile: async (userId: number): Promise<UserDto> => {
+  getProfile: async (userId: number): Promise<UserProfileDto> => {
     return await apiClient
       .get<ApiResponse<UserDto>>(`/users/${userId}`)
       .then((response) => response.data)

@@ -1,10 +1,10 @@
 import { userApi } from "@/entities/user/api/user-api"
-import { AllUserProfilesResponse, UserDto } from "@/entities/user/dto/user.dto"
+import { AllUserProfilesResponse, UserProfileDto } from "@/entities/user/dto/user.dto"
 import { ApiClient } from "@/shared/api"
 
 export interface UserDataSource {
   list(): Promise<AllUserProfilesResponse>
-  getProfile(userId: number): Promise<UserDto>
+  getProfile(userId: number): Promise<UserProfileDto>
 }
 
 export class UserApiAdapter implements UserDataSource {
@@ -18,7 +18,7 @@ export class UserApiAdapter implements UserDataSource {
     return await this.api.list()
   }
 
-  async getProfile(userId: number): Promise<UserDto> {
+  async getProfile(userId: number): Promise<UserProfileDto> {
     return await this.api.getProfile(userId)
   }
 }

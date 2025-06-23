@@ -1,15 +1,17 @@
-import { UserDto } from "@/entities/user/dto/user.dto"
+import { UserDto, UserProfileDto } from "@/entities/user/dto/user.dto"
 
 export interface UserData {
   id: number
   username: string
   image: string
+
   firstName?: string
   lastName?: string
-  fullname?: string
+  fullName?: string
   age?: number
   email?: string
   phone?: string
+
   address?: {
     address: string
     city: string
@@ -19,5 +21,8 @@ export interface UserData {
     name: string
     title: string
   }
+
+  // DTO 변환 메서드
   toDto(): UserDto
+  toProfileDto(): UserProfileDto
 }

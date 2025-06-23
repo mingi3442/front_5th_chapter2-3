@@ -1,8 +1,8 @@
 import { HighlightText } from "@/shared/ui"
-import { Comment } from "../../types"
+import { CommentDto } from "../../dto"
 
 interface CommentViewProps extends React.HTMLAttributes<HTMLDivElement> {
-  comment: Comment
+  comment: CommentDto
   searchQuery: string
 }
 

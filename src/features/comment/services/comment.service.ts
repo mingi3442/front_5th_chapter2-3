@@ -34,7 +34,11 @@ export const CommentService = (commentDataSource: CommentDataSource): CommentUse
     try {
       // 새 도메인 모델 생성
       const user = await userApiInstance.getProfile(userId)
-      const newComment = CommentFactory.createNew(body, postId, user)
+      const newComment = CommentFactory.createNew(body, postId, {
+        id: userId,
+        username: user.username,
+        fullName: user.username,
+      })
 
       // 데이터 소스를 통해 저장
       const savedComment = await commentDataSource.createComment(newComment)

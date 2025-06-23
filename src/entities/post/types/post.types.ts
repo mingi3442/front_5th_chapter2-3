@@ -1,4 +1,4 @@
-import { User } from "@/entities/user/types/user.types"
+import { UserDto } from "@/entities/user/dto/user.dto"
 
 export interface Post {
   id: number
@@ -22,5 +22,5 @@ interface Reactions {
 }
 
 export interface PostWithAuthor extends Post {
-  author?: User
+  author?: UserDto
 }

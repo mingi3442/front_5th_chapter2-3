@@ -1,7 +1,7 @@
 import { create } from "zustand"
-import { User } from "../types"
+import { UserDto } from "../dto/user.dto"
 
-type UserStoreState = Pick<User, "id">
+type UserStoreState = Pick<UserDto, "id">
 
 export const useUserStore = create<UserStoreState>((set) => ({
   id: 1,

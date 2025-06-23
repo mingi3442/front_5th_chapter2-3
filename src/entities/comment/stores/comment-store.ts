@@ -1,7 +1,7 @@
+import { CommentDto } from "@/entities/comment/dto"
 import { create } from "zustand"
-import { Comment } from "../types"
 
-type CommentStoreState = Pick<Comment, "body" | "postId" | "id"> & {
+type CommentStoreState = Pick<CommentDto, "body" | "postId" | "id"> & {
   userId: number
 
   setBody: (body: string) => void

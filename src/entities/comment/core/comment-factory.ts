@@ -1,16 +1,16 @@
 import { CommentDto } from "@/entities/comment/dto"
-import { User } from "@/entities/user/types"
+import { UserReference } from "@/entities/comment/types"
 import { Comment } from "./comment"
 
 export class CommentFactory {
   /**
    * 새 댓글 객체를 생성
    */
-  static createNew(body: string, postId: number, user: User): Comment {
+  static createNew(body: string, postId: number, user: UserReference): Comment {
     return new Comment(0, body, postId, {
       id: user.id,
       username: user.username,
-      fullName: user.firstName + " " + user.lastName,
+      fullName: user.fullName,
     })
   }
 
