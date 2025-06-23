@@ -1,5 +1,5 @@
 // features/comment/index.ts
-import { CommentApiAdapter } from "@/entities/comment/api/comment-api-adapter"
+import { CommentApiAdapter } from "@/entities/comment/api/comment.adapter"
 import { apiClient } from "@/shared/api/api"
 import { CommentService } from "./comment.service"
 

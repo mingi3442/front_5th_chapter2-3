@@ -1,6 +1,6 @@
 import { CommentEntity } from "@/entities/comment/types"
 import { ApiClient } from "@/shared/api/api"
-import { CommentFactory } from "../core/comment-factory"
+import { CommentFactory } from "../core/comment.factory"
 import { commentApi } from "./comment-api"
 
 export interface CommentDataSource {

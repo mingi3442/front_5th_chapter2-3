@@ -1,5 +1,5 @@
 import { useCommentStore } from "@/entities/comment/stores"
-import { useUserStore } from "@/entities/user/stores"
+import { useUserStore } from "@/entities/user/store"
 import { useAddComment } from "@/features/comment/hooks"
 import { Button, Dialog, DialogContent, DialogHeader, DialogTitle, Textarea } from "@/shared/ui"
 import React from "react"

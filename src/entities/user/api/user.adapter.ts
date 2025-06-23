@@ -1,4 +1,4 @@
-import { userApi } from "@/entities/user/api/user-api"
+import { userApi } from "@/entities/user/api/user.api"
 import { AllUserProfilesResponse, UserProfileDto } from "@/entities/user/dto/user.dto"
 import { ApiClient } from "@/shared/api"
 

@@ -1,8 +1,8 @@
-import { CommentDataSource } from "@/entities/comment/api/comment-api-adapter"
-import { CommentFactory } from "@/entities/comment/core/comment-factory"
+import { CommentDataSource } from "@/entities/comment/api/comment.adapter"
+import { CommentFactory } from "@/entities/comment/core/comment.factory"
 
 import { CommentDto } from "@/entities/comment/dto"
-import { userApi } from "@/entities/user/api/user-api"
+import { userApi } from "@/entities/user/api/user.api"
 import { apiClient } from "@/shared/api/api"
 import { CommentUseCase } from "../usecase/comment.usecase"
 

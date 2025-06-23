@@ -1,6 +1,6 @@
 import { CommentDto } from "@/entities/comment/dto"
 import { UserReference } from "@/entities/comment/types"
-import { Comment } from "./comment"
+import { Comment } from "./comment.domain"
 
 export class CommentFactory {
   /**

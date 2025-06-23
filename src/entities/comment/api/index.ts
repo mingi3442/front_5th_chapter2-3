@@ -1,2 +1,2 @@
-export { CommentApiAdapter } from "./comment-api-adapter"
-export { COMMENT_QUERY_KEY } from "./comment-query-key"
+export { CommentApiAdapter } from "./comment.adapter"
+export { COMMENT_QUERY_KEY } from "./comment.query-key"

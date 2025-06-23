@@ -1,6 +1,6 @@
 import { userApi } from "@/entities/user/api"
-import { USER_QUERY_KEY } from "@/entities/user/api/user-query-key.api"
-import { useUserStore } from "@/entities/user/stores"
+import { USER_QUERY_KEY } from "@/entities/user/api/user.query-key"
+import { useUserStore } from "@/entities/user/store"
 import { UserView } from "@/entities/user/ui"
 import { UserService } from "@/features/user/services/user.service"
 import { apiClient } from "@/shared/api"
