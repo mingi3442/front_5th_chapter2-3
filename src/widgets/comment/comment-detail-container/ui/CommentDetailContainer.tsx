@@ -1,5 +1,5 @@
 import { CommentDto } from "@/entities/comment/dto"
-import { useCommentStore } from "@/entities/comment/stores"
+import { useCommentStore } from "@/entities/comment/store"
 import { useDeleteComment, useGetCommentsByPostId, useLikeComment } from "@/features/comment/hooks"
 import { Button } from "@/shared/ui"
 import { Plus } from "lucide-react"

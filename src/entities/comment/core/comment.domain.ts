@@ -1,37 +1,40 @@
-import { CommentDto } from "@/entities/comment/dto"
 import { CommentEntity, UserReference } from "@/entities/comment/types"
+import { CommentBody, Timestamp, UserReferenceVO } from "../value-objects"
 
+/**
+ * Comment 도메인 엔티티
+ * Value Object를 활용하여 비즈니스 규칙과 불변성을 강화
+ */
 export class Comment implements CommentEntity {
-  private _body: string
+  private readonly _id: number
+  private _body: CommentBody
+  private readonly _postId: number
+  private readonly _user: UserReferenceVO
+  private readonly _createdAt: Timestamp
   private _likes: number
-  private _updatedAt: Date | null = null
+  private _updatedAt: Timestamp | null
 
   constructor(
-    private readonly _id: number,
+    id: number,
     body: string,
-    private readonly _postId: number,
-    private readonly _user: UserReference,
-    private readonly _createdAt: Date = new Date(),
+    postId: number,
+    user: UserReference,
+    createdAt: Date | string | number = new Date(),
     likes: number = 0,
+    updatedAt: Date | string | number | null = null,
   ) {
-    this.validateBody(body)
-    this._body = body
+    this._id = id
+    this._body = new CommentBody(body)
+    this._postId = postId
+    this._user = new UserReferenceVO(user)
+    this._createdAt = new Timestamp(createdAt)
     this._likes = likes
-  }
-
-  private validateBody(body: string): void {
-    if (!body.trim()) {
-      throw new Error("댓글 내용은 비어있을 수 없습니다")
-    }
-    if (body.length > 1000) {
-      throw new Error("댓글 내용은 1000자를 초과할 수 없습니다")
-    }
+    this._updatedAt = updatedAt ? new Timestamp(updatedAt) : null
   }
 
   updateBody(newBody: string): void {
-    this.validateBody(newBody)
-    this._body = newBody
-    this._updatedAt = new Date()
+    this._body = new CommentBody(newBody)
+    this._updatedAt = Timestamp.now()
   }
 
   like(): void {
@@ -49,7 +52,7 @@ export class Comment implements CommentEntity {
   }
 
   get body(): string {
-    return this._body
+    return this._body.text
   }
 
   get postId(): number {
@@ -57,29 +60,18 @@ export class Comment implements CommentEntity {
   }
 
   get user(): UserReference {
-    return this._user
+    return this._user.toDTO()
   }
 
   get createdAt(): Date {
-    return new Date(this._createdAt)
+    return this._createdAt.toDate()
   }
 
   get updatedAt(): Date | null {
-    return this._updatedAt ? new Date(this._updatedAt) : null
+    return this._updatedAt ? this._updatedAt.toDate() : null
   }
 
   get likes(): number {
     return this._likes
-  }
-
-  // DTO 변환 메소드
-  toDto(): CommentDto {
-    return {
-      id: this.id,
-      body: this.body,
-      postId: this.postId,
-      user: this.user,
-      likes: this.likes,
-    }
   }
 }

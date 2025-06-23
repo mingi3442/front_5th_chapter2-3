@@ -1,7 +1,7 @@
-import { CommentDataSource } from "@/entities/comment/api/comment.adapter"
 import { CommentFactory } from "@/entities/comment/core/comment.factory"
-
 import { CommentDto } from "@/entities/comment/dto"
+import { CommentRepository } from "@/entities/comment/repository"
+import { CommentMapperService } from "@/entities/comment/service/mapper.service"
 import { userApi } from "@/entities/user/api/user.api"
 import { apiClient } from "@/shared/api/api"
 import { CommentUseCase } from "../usecase/comment.usecase"
@@ -9,21 +9,11 @@ import { CommentUseCase } from "../usecase/comment.usecase"
 // ! User API 인스턴스 생성 개선 필요
 const userApiInstance = userApi(apiClient)
 
-export const CommentService = (commentDataSource: CommentDataSource): CommentUseCase => ({
+export const CommentService = (commentRepository: CommentRepository): CommentUseCase => ({
   getAllComments: async (postId: number): Promise<CommentDto[]> => {
     try {
-      const domainComments = await commentDataSource.getCommentsByPost(postId)
-
-      return domainComments.map((comment) => {
-        const dto = comment.toDto()
-        return {
-          id: dto.id,
-          body: dto.body,
-          postId: dto.postId,
-          likes: dto.likes,
-          user: dto.user,
-        }
-      })
+      const domainComments = await commentRepository.getByPostId(postId)
+      return domainComments.map(comment => CommentMapperService.toDto(comment))
     } catch (error) {
       console.error("GetAllComments Error:", error)
       throw error
@@ -32,27 +22,22 @@ export const CommentService = (commentDataSource: CommentDataSource): CommentUse
 
   addComment: async (body: string, postId: number, userId: number) => {
     try {
-      // 새 도메인 모델 생성
+      // 사용자 정보 가져오기
       const user = await userApiInstance.getProfile(userId)
+
+      // 새 도메인 모델 생성
       const newComment = CommentFactory.createNew(body, postId, {
         id: userId,
         username: user.username,
         fullName: user.username,
       })
 
-      // 데이터 소스를 통해 저장
-      const savedComment = await commentDataSource.createComment(newComment)
+      // Repository를 통해 저장
+      const savedComment = await commentRepository.create(newComment)
       if (!savedComment) throw new Error("Failed to create comment")
 
       // 도메인 모델을 DTO로 변환
-      const dto = savedComment.toDto()
-      return {
-        id: dto.id,
-        body: dto.body,
-        postId: dto.postId,
-        likes: dto.likes,
-        user: dto.user,
-      }
+      return CommentMapperService.toDto(savedComment)
     } catch (error) {
       console.error("AddComment Error:", error)
       throw error
@@ -61,24 +46,20 @@ export const CommentService = (commentDataSource: CommentDataSource): CommentUse
 
   updateComment: async (id: number, body: string): Promise<CommentDto> => {
     try {
-      // 먼저 기존 도메인 모델 가져오기 (실제로는 별도 메서드가 필요할 수 있음)
-      const comments = await commentDataSource.getCommentsByPost(0)
+      // 기존 댓글 가져오기
+      const comments = await commentRepository.getByPostId(0) // 모든 댓글 가져오기 (실제로는 getById 메서드가 필요)
       const existingComment = comments.find((c) => c.id === id)
       if (!existingComment) throw new Error(`Comment with id ${id} not found`)
 
-      // 도메인 모델 업데이트
+      // 도메인 모델 업데이트 (비즈니스 로직 적용)
       existingComment.updateBody(body)
 
-      // 데이터 소스를 통해 업데이트
-      const updatedComment = await commentDataSource.updateComment(existingComment)
+      // Repository를 통해 업데이트
+      const updatedComment = await commentRepository.update(existingComment)
       if (!updatedComment) throw new Error("Failed to update comment")
 
       // 도메인 모델을 DTO로 변환
-      const dto = updatedComment.toDto()
-      return {
-        ...dto,
-        user: dto.user,
-      } as CommentDto
+      return CommentMapperService.toDto(updatedComment)
     } catch (error) {
       console.error("UpdateComment Error:", error)
       throw error
@@ -87,8 +68,8 @@ export const CommentService = (commentDataSource: CommentDataSource): CommentUse
 
   deleteComment: async (id: number): Promise<boolean> => {
     try {
-      // 데이터 소스를 통해 삭제
-      return await commentDataSource.deleteComment(id)
+      // Repository를 통해 삭제
+      return await commentRepository.delete(id)
     } catch (error) {
       console.error("DeleteComment Error:", error)
       throw error
@@ -97,8 +78,8 @@ export const CommentService = (commentDataSource: CommentDataSource): CommentUse
 
   likeComment: async (id: number): Promise<boolean> => {
     try {
-      // 데이터 소스를 통해 좋아요 추가
-      return await commentDataSource.likeComment(id)
+      // Repository를 통해 좋아요 추가
+      return await commentRepository.like(id)
     } catch (error) {
       console.error("LikeComment Error:", error)
       throw error

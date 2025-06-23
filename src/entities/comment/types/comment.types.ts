@@ -1,5 +1,3 @@
-import { CommentDto } from "@/entities/comment/dto"
-
 export interface UserReference {
   id: number
   username: string
@@ -12,6 +10,5 @@ export interface CommentEntity {
   likes: number
   postId: number
   user: UserReference
-  toDto(): CommentDto
   updateBody(newBody: string): void
 }

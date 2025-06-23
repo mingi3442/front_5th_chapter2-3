@@ -3,27 +3,34 @@ import { UserReference } from "@/entities/comment/types"
 import { Comment } from "./comment.domain"
 
 export class CommentFactory {
-  /**
-   * 새 댓글 객체를 생성
-   */
   static createNew(body: string, postId: number, user: UserReference): Comment {
-    return new Comment(0, body, postId, {
-      id: user.id,
-      username: user.username,
-      fullName: user.fullName,
-    })
+    return new Comment(
+      0,
+      body,
+      postId,
+      {
+        id: user.id,
+        username: user.username,
+        fullName: user.fullName,
+      },
+      new Date(), // 현재 시간
+      0, // 좋아요 0개로 시작
+      null, // 아직 수정되지 않음
+    )
   }
 
-  /**
-   * API 응답 DTO로부터 도메인 객체를 생성
-   */
   static fromDTO(dto: CommentDto): Comment {
-    return new Comment(dto.id, dto.body, dto.postId, dto.user, new Date(), dto.likes || 0)
+    return new Comment(
+      dto.id,
+      dto.body,
+      dto.postId,
+      dto.user,
+      new Date(), // 생성 시간 (API에서 제공하지 않는 경우 현재 시간 사용)
+      dto.likes || 0,
+      null, // 수정 시간 정보가 없는 경우 null
+    )
   }
 
-  /**
-   * DTO 배열로부터 도메인 객체 배열을 생성
-   */
   static fromDTOList(dtos: CommentDto[]): Comment[] {
     return dtos.map((dto) => this.fromDTO(dto))
   }
