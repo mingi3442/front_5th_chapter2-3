@@ -1,7 +1,7 @@
 import { CommentDto } from "@/entities/comment/dto"
-import { CommentData, UserReference } from "@/entities/comment/types"
+import { CommentEntity, UserReference } from "@/entities/comment/types"
 
-export class Comment implements CommentData {
+export class Comment implements CommentEntity {
   private _body: string
   private _likes: number
   private _updatedAt: Date | null = null

@@ -1,7 +1,7 @@
 import { UserDto, UserProfileDto } from "@/entities/user/dto/user.dto"
-import { UserData } from "@/entities/user/types"
+import { AddressValue, CompanyValue, UserEntity } from "@/entities/user/types"
 
-export class User implements UserData {
+export class User implements UserEntity {
   private _id: number
   private _username: string
   private _image: string
@@ -11,15 +11,8 @@ export class User implements UserData {
   private _age?: number
   private _email?: string
   private _phone?: string
-  private _address?: {
-    address: string
-    city: string
-    state: string
-  }
-  private _company?: {
-    name: string
-    title: string
-  }
+  private _address?: AddressValue
+  private _company?: CompanyValue
 
   constructor(
     id: number,
@@ -31,15 +24,8 @@ export class User implements UserData {
     age?: number,
     email?: string,
     phone?: string,
-    address?: {
-      address: string
-      city: string
-      state: string
-    },
-    company?: {
-      name: string
-      title: string
-    },
+    address?: AddressValue,
+    company?: CompanyValue,
   ) {
     this._id = id
     this._username = username
@@ -90,11 +76,11 @@ export class User implements UserData {
     return this._phone
   }
 
-  get address(): { address: string; city: string; state: string } | undefined {
+  get address(): AddressValue | undefined {
     return this._address
   }
 
-  get company(): { name: string; title: string } | undefined {
+  get company(): CompanyValue | undefined {
     return this._company
   }
 

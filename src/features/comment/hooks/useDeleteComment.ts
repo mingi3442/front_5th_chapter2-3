@@ -1,5 +1,5 @@
 import { COMMENT_QUERY_KEY } from "@/entities/comment/api"
-import { CommentData } from "@/entities/comment/types"
+import { CommentDto } from "@/entities/comment/dto"
 import { commentService } from "@/features/comment/services"
 import { queryClient } from "@/shared/api"
 import { useMutation } from "@tanstack/react-query"
@@ -16,7 +16,7 @@ export const useDeleteComment = () => {
       return { result, postId }
     },
     onSuccess: ({ postId }, { id }) => {
-      queryClient.setQueryData(COMMENT_QUERY_KEY.byPostId(postId), (oldComments: CommentData[] | undefined) => {
+      queryClient.setQueryData(COMMENT_QUERY_KEY.byPostId(postId), (oldComments: CommentDto[] | undefined) => {
         if (!oldComments) return oldComments
 
         return oldComments.filter((comment) => comment.id !== id)

@@ -1,5 +1,5 @@
 import { COMMENT_QUERY_KEY } from "@/entities/comment/api"
-import { CommentData } from "@/entities/comment/types"
+import { CommentDto } from "@/entities/comment/dto"
 import { commentService } from "@/features/comment/services"
 import { queryClient } from "@/shared/api"
 import { useMutation } from "@tanstack/react-query"
@@ -19,7 +19,7 @@ export const useLikeComment = () => {
 
     onSuccess: ({ result, id }, { postId }) => {
       if (!result) return
-      queryClient.setQueryData(COMMENT_QUERY_KEY.byPostId(postId), (oldComments: CommentData[] | undefined) => {
+      queryClient.setQueryData(COMMENT_QUERY_KEY.byPostId(postId), (oldComments: CommentDto[] | undefined) => {
         if (!oldComments) return oldComments
 
         return oldComments.map((comment) => (comment.id === id ? { ...comment, likes: comment.likes + 1 } : comment))

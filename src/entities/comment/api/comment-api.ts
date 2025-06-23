@@ -1,7 +1,7 @@
 import { ApiClient } from "@/shared/api/api"
 import { ApiResponse } from "@/shared/types"
 import { CommentResponseDto } from "../dto/comment.dto"
-import { CommentData } from "../types"
+import { CommentEntity } from "../types"
 
 export const commentApi = (apiClient: ApiClient) => ({
   listByPost: async (postId: number): Promise<CommentResponseDto> => {
@@ -13,18 +13,18 @@ export const commentApi = (apiClient: ApiClient) => ({
         return error
       })
   },
-  create: async (body: string, postId: number, userId: number): Promise<CommentData> => {
+  create: async (body: string, postId: number, userId: number): Promise<CommentEntity> => {
     return await apiClient
-      .post<ApiResponse<CommentData>>(`/comments/add`, { body, postId, userId })
+      .post<ApiResponse<CommentEntity>>(`/comments/add`, { body, postId, userId })
       .then((response) => response.data)
       .catch((error) => {
         console.error("Comment Create Error: ", error)
         return error
       })
   },
-  update: async (id: number, body: string): Promise<CommentData> => {
+  update: async (id: number, body: string): Promise<CommentEntity> => {
     return await apiClient
-      .put<ApiResponse<Comment>>(`/comments/${id}`, { body })
+      .put<ApiResponse<CommentEntity>>(`/comments/${id}`, { body })
       .then((response) => response.data)
       .catch((error) => {
         console.error("Comment Update Error: ", error)

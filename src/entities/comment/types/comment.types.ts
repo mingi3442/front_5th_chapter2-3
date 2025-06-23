@@ -6,11 +6,12 @@ export interface UserReference {
   fullName: string
 }
 
-export interface CommentData {
+export interface CommentEntity {
   body: string
   id: number
   likes: number
   postId: number
   user: UserReference
   toDto(): CommentDto
+  updateBody(newBody: string): void
 }

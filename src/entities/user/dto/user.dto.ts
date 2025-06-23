@@ -1,29 +1,24 @@
+import { AddressDto } from "@/entities/user/dto/address.dto"
+import { CompanyDto } from "@/entities/user/dto/company.dto"
 import { Pagination } from "@/shared/types"
 
-export interface UserDto {
+export type UserDto = {
   id: number
   image: string
   username: string
   fullName?: string
 }
 
-export interface UserProfileDto extends UserDto {
+export type UserProfileDto = UserDto & {
   firstName?: string
   lastName?: string
   age?: number
   email?: string
   phone?: string
-  address?: {
-    address: string
-    city: string
-    state: string
-  }
-  company?: {
-    name: string
-    title: string
-  }
+  address?: AddressDto
+  company?: CompanyDto
 }
 
-export interface AllUserProfilesResponse extends Pagination {
+export type AllUserProfilesResponse = Pagination & {
   users: UserDto[]
 }
