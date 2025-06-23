@@ -1,6 +1,6 @@
-import { userApi } from "@/entities/user/api"
+import { userAdapter } from "@/entities/user/api"
 import { User } from "@/entities/user/core/user.domain"
-import { UserMapperService } from "@/entities/user/service/mapper.service"
+import { UserMapperService } from "@/entities/user/service"
 import { ApiClient } from "@/shared/api"
 
 export interface UserRepository {
@@ -9,9 +9,9 @@ export interface UserRepository {
 }
 
 export class UserApiRepository implements UserRepository {
-  private api: ReturnType<typeof userApi>
+  private api: ReturnType<typeof userAdapter>
   constructor(apiClient: ApiClient) {
-    this.api = userApi(apiClient)
+    this.api = userAdapter(apiClient)
   }
 
   async getUserProfile(userId: number): Promise<User> {

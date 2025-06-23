@@ -1,24 +1,24 @@
-import { userApi } from "@/entities/user/api/user.api"
-import { AllUserProfilesResponse, UserProfileDto } from "@/entities/user/dto/user.dto"
-import { ApiClient } from "@/shared/api"
+import { ApiClient } from "@/shared/api/api"
+import { ApiResponse } from "@/shared/types"
+import { AllUserProfilesResponse, UserDto, UserProfileDto } from "../dto/user.dto"
 
-export interface UserDataSource {
-  list(): Promise<AllUserProfilesResponse>
-  getProfile(userId: number): Promise<UserProfileDto>
-}
-
-export class UserApiAdapter implements UserDataSource {
-  private api: ReturnType<typeof userApi>
-
-  constructor(apiClient: ApiClient) {
-    this.api = userApi(apiClient)
-  }
-
-  async list(): Promise<AllUserProfilesResponse> {
-    return await this.api.list()
-  }
-
-  async getProfile(userId: number): Promise<UserProfileDto> {
-    return await this.api.getProfile(userId)
-  }
-}
+export const userAdapter = (apiClient: ApiClient) => ({
+  list: async (): Promise<AllUserProfilesResponse> => {
+    return await apiClient
+      .get<ApiResponse<AllUserProfilesResponse>>(`/users?limit=0&select=username,image`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("Users List Error: ", error)
+        return error
+      })
+  },
+  getProfile: async (userId: number): Promise<UserProfileDto> => {
+    return await apiClient
+      .get<ApiResponse<UserDto>>(`/users/${userId}`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("User Profile Error: ", error)
+        return error
+      })
+  },
+})

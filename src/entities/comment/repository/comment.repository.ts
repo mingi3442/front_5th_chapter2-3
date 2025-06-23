@@ -1,5 +1,5 @@
 import { ApiClient } from "@/shared/api/api"
-import { commentApi } from "../api/comment-api"
+import { commentAdapter } from "../api/comment.adapter"
 import { Comment } from "../core/comment.domain"
 import { CommentFactory } from "../core/comment.factory"
 
@@ -18,10 +18,10 @@ export interface CommentRepository {
  * API를 통해 Comment 도메인 객체의 영속성을 구현하는 Repository
  */
 export class CommentApiRepository implements CommentRepository {
-  private api: ReturnType<typeof commentApi>
+  private api: ReturnType<typeof commentAdapter>
 
   constructor(apiClient: ApiClient) {
-    this.api = commentApi(apiClient)
+    this.api = commentAdapter(apiClient)
   }
 
   async getByPostId(postId: number): Promise<Comment[]> {
